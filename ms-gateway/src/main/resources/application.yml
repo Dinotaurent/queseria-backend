@@ -1,0 +1,34 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8762/eureka
+  instance:
+    prefer-ip-address: true
+server:
+  port: 8091
+spring:
+  application:
+    name: ms-gateway
+  cloud:
+    gateway:
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins:
+              - 'http://localhost:4200'
+            allowedHeaders:
+              - Content-Type
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+#      routes:
+#        - filters: StripPrefix=2
+#          id: ms-mascotas
+#          predicates: Path=/api/mascotas/**
+#          uri: lb://ms-mascotas
+
+loadbalancer:
+  ribbon:
+    enable: false
