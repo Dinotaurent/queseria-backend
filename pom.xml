@@ -16,6 +16,8 @@
     <modules>
         <module>ms-eureka-server</module>
         <module>ms-gateway</module>
+        <module>ms-productos</module>
+        <module>ms-facturas</module>
     </modules>
 
     <groupId>org.example</groupId>

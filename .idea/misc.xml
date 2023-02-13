@@ -7,6 +7,10 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/ms-eureka-server/pom.xml" />
         <option value="$PROJECT_DIR$/ms-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-productos/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-facturas/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-commons-productos/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-commons/pom.xml" />
       </list>
     </option>
   </component>

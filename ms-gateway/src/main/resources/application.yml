@@ -23,11 +23,15 @@ spring:
               - POST
               - PUT
               - DELETE
-#      routes:
-#        - filters: StripPrefix=2
-#          id: ms-mascotas
-#          predicates: Path=/api/mascotas/**
-#          uri: lb://ms-mascotas
+      routes:
+        - filters: StripPrefix=2
+          id: ms-productos
+          predicates: Path=/api/productos/**
+          uri: lb://ms-productos
+        - filters: StripPrefix=2
+          id: ms-facturas
+          predicates: Path=/api/facturas/**
+          uri: lb://ms-facturas
 
 loadbalancer:
   ribbon:
