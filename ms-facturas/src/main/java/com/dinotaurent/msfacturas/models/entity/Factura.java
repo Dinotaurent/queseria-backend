@@ -88,8 +88,8 @@ public class Factura {
         for (Double preciosProducto : preciosProductos) {
             total = preciosProducto + total;
         }
-
-        return total;
+        this.total = total;
+        return this.total;
     }
 
 }
