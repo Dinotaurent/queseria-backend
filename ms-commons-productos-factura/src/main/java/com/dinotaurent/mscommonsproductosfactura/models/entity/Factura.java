@@ -1,6 +1,5 @@
-package com.dinotaurent.msfacturas.models.entity;
+package com.dinotaurent.mscommonsproductosfactura.models.entity;
 
-import com.dinotaurent.mscommonsproductos.models.entity.Producto;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -22,8 +21,9 @@ public class Factura {
 
     private boolean pagada;
 
-    public Factura(){
+    public Factura() {
         this.productos = new ArrayList<>();
+        this.total = 0.0;
     }
 
     @Temporal(TemporalType.DATE)
@@ -63,7 +63,7 @@ public class Factura {
     }
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         this.createAt = new Date();
     }
 
@@ -75,21 +75,35 @@ public class Factura {
         this.id = id;
     }
 
-    public void addProducto(Producto productos){
+    public void addProducto(Producto productos) {
         this.productos.add(productos);
     }
 
-    public void removeProducto(Producto producto){
+    public void removeProducto(Producto producto) {
         this.productos.remove(producto);
     }
 
-    public Double calcularTotal(List<Double> preciosProductos){
+    public Double calcularTotal(List<Double> preciosProductos) {
         Double total = 0.0;
         for (Double preciosProducto : preciosProductos) {
             total = preciosProducto + total;
         }
         this.total = total;
         return this.total;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Factura)) {
+            return false;
+        }
+        Factura f = (Factura) obj;
+
+
+        return this.id != null && this.id.equals(f.getId());
     }
 
 }

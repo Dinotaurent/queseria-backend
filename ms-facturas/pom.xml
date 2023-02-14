@@ -49,7 +49,7 @@
 
 		<dependency>
 			<groupId>com.dinotaurent</groupId>
-			<artifactId>ms-commons-productos</artifactId>
+			<artifactId>ms-commons-productos-factura</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
-    <file url="file://$PROJECT_DIR$/ms-commons-productos/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/ms-commons-productos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-commons-factura/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-commons-factura/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-commons-productos-factura/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-commons-productos-factura/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-commons/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-commons/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-eureka-server/src/main/java" charset="UTF-8" />
@@ -13,6 +15,8 @@
     <file url="file://$PROJECT_DIR$/ms-gateway/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-productos/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/ms-productos/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-registros/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/ms-registros/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

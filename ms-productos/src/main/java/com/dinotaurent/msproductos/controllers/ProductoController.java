@@ -1,7 +1,7 @@
 package com.dinotaurent.msproductos.controllers;
 
 import com.dinotaurent.mscommons.controllers.CommonController;
-import com.dinotaurent.mscommonsproductos.models.entity.Producto;
+import com.dinotaurent.mscommonsproductosfactura.models.entity.Producto;
 import com.dinotaurent.msproductos.models.services.IProductoService;
 import jakarta.validation.Valid;
 import org.springframework.core.io.ByteArrayResource;

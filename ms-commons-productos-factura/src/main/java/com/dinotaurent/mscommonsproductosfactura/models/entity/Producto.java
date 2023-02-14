@@ -1,4 +1,4 @@
-package com.dinotaurent.mscommonsproductos.models.entity;
+package com.dinotaurent.mscommonsproductosfactura.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -80,4 +80,17 @@ public class Producto {
         return this.foto != null ? this.foto.hashCode() : null;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (!(obj instanceof Producto)) {
+            return false;
+        }
+        Producto p = (Producto) obj;
+
+
+        return this.id != null && this.id.equals(p.getId());
+    }
 }

@@ -32,6 +32,10 @@ spring:
           id: ms-facturas
           predicates: Path=/api/facturas/**
           uri: lb://ms-facturas
+        - filters: StripPrefix=2
+          id: ms-registros
+          predicates: Path=/api/registros/**
+          uri: lb://ms-registros
 
 loadbalancer:
   ribbon:

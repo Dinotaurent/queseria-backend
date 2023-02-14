@@ -1,8 +1,7 @@
 package com.dinotaurent.msproductos.models.dao;
 
 import com.dinotaurent.mscommons.models.services.CrudAndSortingRepository;
-import com.dinotaurent.mscommonsproductos.models.entity.Producto;
-import org.springframework.data.jpa.repository.Query;
+import com.dinotaurent.mscommonsproductosfactura.models.entity.Producto;
 
 import java.util.List;
 

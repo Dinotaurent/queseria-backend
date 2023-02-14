@@ -18,6 +18,7 @@
         <module>ms-gateway</module>
         <module>ms-productos</module>
         <module>ms-facturas</module>
+        <module>ms-registros</module>
     </modules>
 
     <groupId>org.example</groupId>

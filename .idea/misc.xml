@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/ms-facturas/pom.xml" />
         <option value="$PROJECT_DIR$/ms-commons-productos/pom.xml" />
         <option value="$PROJECT_DIR$/ms-commons/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-registros/pom.xml" />
+        <option value="$PROJECT_DIR$/ms-commons-productos-factura/pom.xml" />
       </list>
     </option>
   </component>

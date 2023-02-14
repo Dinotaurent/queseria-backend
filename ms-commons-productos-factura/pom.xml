@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.dinotaurent</groupId>
-	<artifactId>ms-commons-productos</artifactId>
+	<artifactId>ms-commons-productos-factura</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>ms-commons-productos</name>
 	<description>Demo project for Spring Boot</description>
