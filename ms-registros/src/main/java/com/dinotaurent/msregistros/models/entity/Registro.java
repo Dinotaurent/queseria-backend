@@ -25,18 +25,14 @@ public class Registro {
     @Transient
     private List<Factura> facturas;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_creacion")
+
     private Date createAt;
 
-    @PrePersist
-    public void prePersist(){
-        this.createAt = new Date();
-    }
 
     public Registro() {
         this.facturas = new ArrayList<>();
         this.valorTotal = new BigDecimal(0);
+        this.createAt = new Date();
     }
 
     public String getId() {
