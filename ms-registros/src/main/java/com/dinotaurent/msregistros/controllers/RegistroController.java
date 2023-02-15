@@ -1,5 +1,6 @@
 package com.dinotaurent.msregistros.controllers;
 
+import com.dinotaurent.mscommonsproductosfactura.models.entity.Factura;
 import com.dinotaurent.msregistros.models.entity.Registro;
 import com.dinotaurent.msregistros.models.services.IRegistroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -22,6 +26,15 @@ public class RegistroController {
 
     @PostMapping("/")
     public ResponseEntity<?> crear(@RequestBody Registro registro) {
+        List<Factura> facturas = service.facturasPagadas();
+        List<BigDecimal> valoresFacturas = new ArrayList<>();
+        facturas.forEach(factura -> {
+            valoresFacturas.add(factura.getTotal());
+        });
+        BigDecimal totalXRegistro = registro.calcularValorTotal(valoresFacturas);
+        registro.setFacturas(facturas);
+        registro.setValorTotal(totalXRegistro);
+
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.insert(registro));
     }
 

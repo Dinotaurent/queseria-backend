@@ -1,5 +1,6 @@
 package com.dinotaurent.msregistros.models.services;
 
+import com.dinotaurent.mscommonsproductosfactura.models.entity.Factura;
 import com.dinotaurent.msregistros.models.entity.Registro;
 
 import java.util.List;
@@ -14,5 +15,7 @@ public interface IRegistroService {
     Registro insert(Registro registro);
 
     void deleteById(String id);
+
+    List<Factura> facturasPagadas();
 
 }

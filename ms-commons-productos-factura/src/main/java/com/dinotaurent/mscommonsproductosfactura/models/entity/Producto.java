@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -19,9 +20,9 @@ public class Producto {
     private String nombre;
 
     @NotNull
-    @Min(1)
+    @Min(999)
     @Max(999999)
-    private Double precio;
+    private BigDecimal precio;
 
     @Lob
     @JsonIgnore
@@ -29,6 +30,7 @@ public class Producto {
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_creacion")
+    @JsonIgnore
     private Date createAt;
 
     @PrePersist
@@ -44,11 +46,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public Double getPrecio() {
+    public BigDecimal getPrecio() {
         return precio;
     }
 
-    public void setPrecio(Double precio) {
+    public void setPrecio(BigDecimal precio) {
         this.precio = precio;
     }
 

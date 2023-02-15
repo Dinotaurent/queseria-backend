@@ -22,7 +22,7 @@ public class Registro {
 
     private BigDecimal valorTotal;
 
-    @Transient
+//    @Transient
     private List<Factura> facturas;
 
 
@@ -65,5 +65,12 @@ public class Registro {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+
+    public BigDecimal calcularValorTotal(List<BigDecimal> valorTotalFacturas){
+        for (BigDecimal valorTotalFactura: valorTotalFacturas) {
+            this.valorTotal = this.valorTotal.add(valorTotalFactura);
+        }
+        return this.valorTotal;
     }
 }

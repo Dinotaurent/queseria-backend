@@ -1,7 +1,10 @@
 package com.dinotaurent.mscommonsproductosfactura.models.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,20 +17,23 @@ public class Factura {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private Double total;
+    private BigDecimal total;
 
+    @JsonIgnoreProperties()
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Producto> productos;
 
+    @JsonIgnore
     private boolean pagada;
 
     public Factura() {
         this.productos = new ArrayList<>();
-        this.total = 0.0;
+        this.total = new BigDecimal(0);
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_creacion")
+    @JsonIgnore
     private Date createAt;
 
     public List<Producto> getProductos() {
@@ -46,11 +52,11 @@ public class Factura {
         this.pagada = pagada;
     }
 
-    public Double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
@@ -83,12 +89,10 @@ public class Factura {
         this.productos.remove(producto);
     }
 
-    public Double calcularTotal(List<Double> preciosProductos) {
-        Double total = 0.0;
-        for (Double preciosProducto : preciosProductos) {
-            total = preciosProducto + total;
+    public BigDecimal calcularTotal(List<BigDecimal> preciosProductos) {
+        for (BigDecimal preciosProducto : preciosProductos) {
+            this.total = this.total.add(preciosProducto);
         }
-        this.total = total;
         return this.total;
     }
 
