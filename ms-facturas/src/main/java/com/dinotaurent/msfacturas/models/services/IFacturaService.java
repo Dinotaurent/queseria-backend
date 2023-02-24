@@ -8,4 +8,7 @@ import java.util.List;
 public interface IFacturaService extends ICommonService<Factura> {
 
     List<Factura> findByPagadaTrue();
+
+    List<Factura> findByProductosId(Long productosId);
+
 }

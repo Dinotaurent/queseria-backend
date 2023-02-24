@@ -1,11 +1,13 @@
 package com.dinotaurent.mscommonsproductosfactura.models.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "productos")
@@ -78,7 +80,7 @@ public class Producto {
         this.id = id;
     }
 
-    public Integer getHashCode() {
+    public Integer getFotoHashCode() {
         return this.foto != null ? this.foto.hashCode() : null;
     }
 

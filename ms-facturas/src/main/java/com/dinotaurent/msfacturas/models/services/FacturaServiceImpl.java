@@ -16,4 +16,10 @@ public class FacturaServiceImpl extends CommonServiceImpl<Factura, IFacturaDao> 
     public List<Factura> findByPagadaTrue() {
         return dao.findByPagadaTrue();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Factura> findByProductosId(Long productosId) {
+        return dao.findByProductosId(productosId);
+    }
 }

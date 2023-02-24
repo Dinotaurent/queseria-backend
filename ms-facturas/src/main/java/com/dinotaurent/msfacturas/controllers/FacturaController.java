@@ -67,13 +67,33 @@ public class FacturaController extends CommonController<Factura, IFacturaService
     @PutMapping("/{id}/pagar-factura")
     public ResponseEntity<?> pagarFactura(@PathVariable Long id) {
         Optional<Factura> o = service.findByID(id);
-        BigDecimal cero = new BigDecimal("0.0");
+        BigDecimal cero = BigDecimal.ZERO;
 
         if (o.isPresent() && o.get().getTotal().compareTo(cero) > 0) {
             o.get().setPagada(true);
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(o.get()));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/{productosId}/quitar-productos-eliminados")
+    public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId){
+        List<Factura> facturas = service.findByProductosId(productosId);
+//        BigDecimal productoPrecio = new BigDecimal(0);
+
+        if(!facturas.isEmpty()){
+            facturas.forEach(factura -> {
+                factura.getProductos().removeIf(producto -> {
+                    producto.getId().equals(productosId);
+                    BigDecimal productoPrecio = producto.getPrecio();
+                    factura.setTotal(factura.getTotal().subtract(productoPrecio));
+                    return true;
+                });
+
+                service.save(factura);
+            });
+        }
+        return ResponseEntity.noContent().build();
     }
 
 }
