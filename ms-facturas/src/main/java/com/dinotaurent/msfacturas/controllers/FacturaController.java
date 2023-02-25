@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @RestController
 public class FacturaController extends CommonController<Factura, IFacturaService> {
@@ -79,17 +80,18 @@ public class FacturaController extends CommonController<Factura, IFacturaService
     @PutMapping("/{productosId}/quitar-productos-eliminados")
     public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId){
         List<Factura> facturas = service.findByProductosId(productosId);
-//        BigDecimal productoPrecio = new BigDecimal(0);
+        AtomicReference<BigDecimal> productoPrecio = new AtomicReference<>(BigDecimal.ZERO);
 
         if(!facturas.isEmpty()){
             facturas.forEach(factura -> {
                 factura.getProductos().removeIf(producto -> {
-                    producto.getId().equals(productosId);
-                    BigDecimal productoPrecio = producto.getPrecio();
-                    factura.setTotal(factura.getTotal().subtract(productoPrecio));
-                    return true;
+                    if(producto.getId().equals(productosId)) {
+                        productoPrecio.set(producto.getPrecio());
+                        return true;
+                    }
+                    return false;
                 });
-
+                factura.setTotal(factura.getTotal().subtract(productoPrecio.get()));
                 service.save(factura);
             });
         }
