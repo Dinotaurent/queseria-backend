@@ -24,37 +24,37 @@ public class FacturaController extends CommonController<Factura, IFacturaService
         return ResponseEntity.ok(service.findByPagadaTrue());
     }
 
-    @PutMapping("/{id}/asignar-productos")
-    public ResponseEntity<?> asignarProductos(@PathVariable Long id, @RequestBody List<Producto> productos) {
+    @PutMapping("/{id}/asignar-producto")
+    public ResponseEntity<?> asignarProductos(@PathVariable Long id, @RequestBody Producto producto) {
         Optional<Factura> of = service.findByID(id);
 
         if (of.isPresent()) {
             Factura facturaBd = of.get();
-            List<BigDecimal> precios = new ArrayList<>();
+            BigDecimal precio = BigDecimal.ZERO;
 
-            productos.forEach(p -> {
-                Producto producto = new Producto();
-                producto.setId(p.getId());
-                producto.setNombre(p.getNombre());
-                producto.setPrecio(p.getPrecio());
-                precios.add(p.getPrecio());
-                BigDecimal totalPrecios = facturaBd.calcularTotal(precios);
-                facturaBd.setTotal(totalPrecios);
-                facturaBd.addProducto(producto);
 
-                Optional<Producto> op = service.listarXId(p.getId());
-                if (op.isPresent()) {
-                    Producto productoBd = op.get();
-                    if(productoBd.getDisponibles() != 0){
+            Producto productoAGuardar = new Producto();
+            productoAGuardar.setId(producto.getId());
+            productoAGuardar.setNombre(producto.getNombre());
+            productoAGuardar.setPrecio(producto.getPrecio());
+            precio = producto.getPrecio();
+            BigDecimal totalPrecios = facturaBd.calcularTotal(precio);
+            facturaBd.setTotal(totalPrecios);
+            facturaBd.addProducto(productoAGuardar);
+
+            Optional<Producto> op = service.listarXId(producto.getId());
+            if (op.isPresent()) {
+                Producto productoBd = op.get();
+                if (productoBd.getDisponibles() != 0) {
                     int disponibles = productoBd.getDisponibles() - 1;
                     disponibles = Math.max(disponibles, 0);
                     productoBd.setDisponibles(disponibles);
-                    service.actualizarDisponibles(p.getId(), productoBd);
-                    } else {
-                        throw new RuntimeException("No existen productos diponibles para agregar a la factura");
-                    }
+                    service.actualizarDisponibles(producto.getId(), productoBd);
+                } else {
+                    throw new RuntimeException("No existen productos diponibles para agregar a la factura");
                 }
-            });
+            }
+
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(facturaBd));
 
         }
@@ -72,13 +72,13 @@ public class FacturaController extends CommonController<Factura, IFacturaService
             BigDecimal totalPrecio = producto.getPrecio();
             facturaBd.setTotal(facturaBd.getTotal().subtract(totalPrecio));
 
-            Optional<Producto> op = service.listarXId(id);
+            Optional<Producto> op = service.listarXId(producto.getId());
             if (op.isPresent()) {
                 Producto productoBd = op.get();
                 int disponibles = productoBd.getDisponibles() + 1;
                 disponibles = Math.max(disponibles, 0);
                 productoBd.setDisponibles(disponibles);
-                service.actualizarDisponibles(productoBd.getId(), productoBd);
+                service.actualizarDisponibles(producto.getId(), productoBd);
             }
 
 
@@ -107,18 +107,39 @@ public class FacturaController extends CommonController<Factura, IFacturaService
 
         if (!facturas.isEmpty()) {
             facturas.forEach(factura -> {
-                factura.getProductos().removeIf(producto -> {
+                factura.getProductos().forEach(producto -> {
                     if (producto.getId().equals(productosId)) {
-                        productoPrecio.set(producto.getPrecio());
-                        return true;
+                        productoPrecio.set(producto.getPrecio().add(productoPrecio.get()));
                     }
-                    return false;
                 });
+                factura.getProductos().removeIf(producto -> producto.getId().equals(productosId));
                 factura.setTotal(factura.getTotal().subtract(productoPrecio.get()));
                 service.save(factura);
             });
         }
         return ResponseEntity.noContent().build();
     }
+
+
+//    @PutMapping("/{productosId}/quitar-productos-eliminados")
+//    public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId) {
+//        List<Factura> facturas = service.findByProductosId(productosId);
+//        AtomicReference<BigDecimal> productoPrecio = new AtomicReference<>(BigDecimal.ZERO);
+//
+//        if (!facturas.isEmpty()) {
+//            facturas.forEach(factura -> {
+//                factura.getProductos().removeIf(producto -> {
+//                    if (producto.getId().equals(productosId)) {
+//                        productoPrecio.set(producto.getPrecio());
+//                        return true;
+//                    }
+//                    return false;
+//                });
+//                factura.setTotal(factura.getTotal().subtract(productoPrecio.get()));
+//                service.save(factura);
+//            });
+//        }
+//        return ResponseEntity.noContent().build();
+//    }
 
 }

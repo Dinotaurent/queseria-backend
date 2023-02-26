@@ -19,7 +19,7 @@ public class Factura {
 
     private BigDecimal total;
 
-//    @JsonIgnore
+    //    @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Producto> productos;
 
@@ -89,11 +89,9 @@ public class Factura {
         this.productos.remove(producto);
     }
 
-    public BigDecimal calcularTotal(List<BigDecimal> preciosProductos) {
+    public BigDecimal calcularTotal(BigDecimal precioProducto) {
         BigDecimal totalSuma = BigDecimal.ZERO;
-        for (BigDecimal precioProducto : preciosProductos) {
-            totalSuma = this.total.add(precioProducto);
-        }
+        totalSuma = this.total.add(precioProducto);
         this.total = totalSuma;
         return this.total;
     }
