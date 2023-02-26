@@ -35,9 +35,32 @@ public class Producto {
     @JsonIgnore
     private Date createAt;
 
+    @NotNull
+    @Min(0)
+    @Max(10)
+    private Integer disponibles;
+
+    public Producto(){
+        this.disponibles = 10;
+    }
+
+
+    public Integer getDisponibles() {
+        return disponibles;
+    }
+
+    public void setDisponibles(Integer disponibles) {
+        this.disponibles = disponibles;
+    }
+
     @PrePersist
+    @PreUpdate
     public void prePersist() {
         this.createAt = new Date();
+
+        if(createAt == null){
+            createAt = new Date();
+        }
     }
 
     public String getNombre() {

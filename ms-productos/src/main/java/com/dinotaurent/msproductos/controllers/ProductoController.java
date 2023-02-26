@@ -79,4 +79,14 @@ public class ProductoController extends CommonController<Producto, IProductoServ
         return ResponseEntity.notFound().build();
 
     }
+
+    @PutMapping("/{id}/actualizar-disponibles")
+    public ResponseEntity<?> actualizarDisponibles(@PathVariable Long id, @RequestBody Producto producto) {
+        Optional<Producto> o = service.findByID(id);
+        if (o.isPresent()) {
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(producto));
+        }
+        return ResponseEntity.notFound().build();
+    }
+
 }

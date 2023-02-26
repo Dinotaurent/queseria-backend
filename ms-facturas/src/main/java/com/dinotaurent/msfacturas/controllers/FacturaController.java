@@ -6,6 +6,7 @@ import com.dinotaurent.mscommonsproductosfactura.models.entity.Factura;
 import com.dinotaurent.msfacturas.models.services.IFacturaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.ErrorResponseException;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -25,10 +26,10 @@ public class FacturaController extends CommonController<Factura, IFacturaService
 
     @PutMapping("/{id}/asignar-productos")
     public ResponseEntity<?> asignarProductos(@PathVariable Long id, @RequestBody List<Producto> productos) {
-        Optional<Factura> o = service.findByID(id);
+        Optional<Factura> of = service.findByID(id);
 
-        if (o.isPresent()) {
-            Factura facturaBd = o.get();
+        if (of.isPresent()) {
+            Factura facturaBd = of.get();
             List<BigDecimal> precios = new ArrayList<>();
 
             productos.forEach(p -> {
@@ -40,6 +41,19 @@ public class FacturaController extends CommonController<Factura, IFacturaService
                 BigDecimal totalPrecios = facturaBd.calcularTotal(precios);
                 facturaBd.setTotal(totalPrecios);
                 facturaBd.addProducto(producto);
+
+                Optional<Producto> op = service.listarXId(p.getId());
+                if (op.isPresent()) {
+                    Producto productoBd = op.get();
+                    if(productoBd.getDisponibles() != 0){
+                    int disponibles = productoBd.getDisponibles() - 1;
+                    disponibles = Math.max(disponibles, 0);
+                    productoBd.setDisponibles(disponibles);
+                    service.actualizarDisponibles(p.getId(), productoBd);
+                    } else {
+                        throw new RuntimeException("No existen productos diponibles para agregar a la factura");
+                    }
+                }
             });
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(facturaBd));
 
@@ -57,6 +71,15 @@ public class FacturaController extends CommonController<Factura, IFacturaService
             facturaBd.removeProducto(producto);
             BigDecimal totalPrecio = producto.getPrecio();
             facturaBd.setTotal(facturaBd.getTotal().subtract(totalPrecio));
+
+            Optional<Producto> op = service.listarXId(id);
+            if (op.isPresent()) {
+                Producto productoBd = op.get();
+                int disponibles = productoBd.getDisponibles() + 1;
+                disponibles = Math.max(disponibles, 0);
+                productoBd.setDisponibles(disponibles);
+                service.actualizarDisponibles(productoBd.getId(), productoBd);
+            }
 
 
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(facturaBd));
@@ -78,14 +101,14 @@ public class FacturaController extends CommonController<Factura, IFacturaService
     }
 
     @PutMapping("/{productosId}/quitar-productos-eliminados")
-    public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId){
+    public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId) {
         List<Factura> facturas = service.findByProductosId(productosId);
         AtomicReference<BigDecimal> productoPrecio = new AtomicReference<>(BigDecimal.ZERO);
 
-        if(!facturas.isEmpty()){
+        if (!facturas.isEmpty()) {
             facturas.forEach(factura -> {
                 factura.getProductos().removeIf(producto -> {
-                    if(producto.getId().equals(productosId)) {
+                    if (producto.getId().equals(productosId)) {
                         productoPrecio.set(producto.getPrecio());
                         return true;
                     }
