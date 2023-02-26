@@ -119,27 +119,4 @@ public class FacturaController extends CommonController<Factura, IFacturaService
         }
         return ResponseEntity.noContent().build();
     }
-
-
-//    @PutMapping("/{productosId}/quitar-productos-eliminados")
-//    public ResponseEntity<?> quitarProductoEliminado(@PathVariable Long productosId) {
-//        List<Factura> facturas = service.findByProductosId(productosId);
-//        AtomicReference<BigDecimal> productoPrecio = new AtomicReference<>(BigDecimal.ZERO);
-//
-//        if (!facturas.isEmpty()) {
-//            facturas.forEach(factura -> {
-//                factura.getProductos().removeIf(producto -> {
-//                    if (producto.getId().equals(productosId)) {
-//                        productoPrecio.set(producto.getPrecio());
-//                        return true;
-//                    }
-//                    return false;
-//                });
-//                factura.setTotal(factura.getTotal().subtract(productoPrecio.get()));
-//                service.save(factura);
-//            });
-//        }
-//        return ResponseEntity.noContent().build();
-//    }
-
 }
