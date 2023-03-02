@@ -8,4 +8,6 @@ import java.util.List;
 public interface IProductoService extends ICommonService<Producto> {
 
     List<Producto> findByNombreContaining(String termino);
+
+    void agregarDiez();
 }

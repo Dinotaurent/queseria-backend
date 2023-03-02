@@ -21,6 +21,11 @@ public class ProductoServiceImpl extends CommonServiceImpl<Producto, IProductoDa
         return dao.findByNombreContaining(termino);
     }
 
+    @Override
+    @Transactional
+    public void agregarDiez() {
+        dao.agregarDiez();
+    }
 
     @Override
     @Transactional

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -87,6 +88,25 @@ public class ProductoController extends CommonController<Producto, IProductoServ
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(producto));
         }
         return ResponseEntity.notFound().build();
+    }
+
+    @PutMapping("/agregar-10")
+    public ResponseEntity<?> agregarDiez(){
+        service.agregarDiez();
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/restar-5")
+    public ResponseEntity<?> restarCinco(@RequestBody List<Producto> productos){
+        productos.forEach(producto -> {
+            if(producto.getDisponibles() > 0){
+                int cantidad = producto.getDisponibles() - 5;
+                cantidad = Math.max(cantidad,0);
+                producto.setDisponibles(cantidad);
+                service.save(producto);
+            }
+        });
+        return ResponseEntity.ok(productos);
     }
 
 }
