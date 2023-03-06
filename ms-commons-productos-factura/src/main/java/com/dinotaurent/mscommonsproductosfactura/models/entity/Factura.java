@@ -23,7 +23,7 @@ public class Factura {
     @ManyToMany(fetch = FetchType.LAZY)
     private List<Producto> productos;
 
-    @JsonIgnore
+//    @JsonIgnore
     private boolean pagada;
 
     public Factura() {

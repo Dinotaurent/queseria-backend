@@ -85,7 +85,9 @@ public class ProductoController extends CommonController<Producto, IProductoServ
     public ResponseEntity<?> actualizarDisponibles(@PathVariable Long id, @RequestBody Producto producto) {
         Optional<Producto> o = service.findByID(id);
         if (o.isPresent()) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(producto));
+            Producto p = o.get();
+            p.setDisponibles(producto.getDisponibles());
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.save(p));
         }
         return ResponseEntity.notFound().build();
     }
@@ -99,11 +101,15 @@ public class ProductoController extends CommonController<Producto, IProductoServ
     @PutMapping("/restar-5")
     public ResponseEntity<?> restarCinco(@RequestBody List<Producto> productos){
         productos.forEach(producto -> {
-            if(producto.getDisponibles() > 0){
-                int cantidad = producto.getDisponibles() - 5;
-                cantidad = Math.max(cantidad,0);
-                producto.setDisponibles(cantidad);
-                service.save(producto);
+            Optional<Producto> o = service.findByID(producto.getId());
+            if(o.isPresent()){
+                Producto p = o.get();
+                if(producto.getDisponibles() > 0){
+                    int cantidad = producto.getDisponibles() - 5;
+                    cantidad = Math.max(cantidad,0);
+                    p.setDisponibles(cantidad);
+                    service.save(p);
+                }
             }
         });
         return ResponseEntity.ok(productos);
