@@ -1,12 +1,7 @@
 package com.dinotaurent.msregistros.models.entity;
 
 import com.dinotaurent.mscommonsproductosfactura.models.entity.Factura;
-import jakarta.persistence.Column;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Transient;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -22,9 +17,7 @@ public class Registro {
 
     private BigDecimal valorTotal;
 
-//    @Transient
     private List<Factura> facturas;
-
 
     private Date createAt;
 

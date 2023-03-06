@@ -28,14 +28,17 @@ public class RegistroController {
     public ResponseEntity<?> crear(@RequestBody Registro registro) {
         List<Factura> facturas = service.facturasPagadas();
         List<BigDecimal> valoresFacturas = new ArrayList<>();
-        facturas.forEach(factura -> {
-            valoresFacturas.add(factura.getTotal());
-        });
-        BigDecimal totalXRegistro = registro.calcularValorTotal(valoresFacturas);
-        registro.setFacturas(facturas);
-        registro.setValorTotal(totalXRegistro);
-
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.insert(registro));
+        if (!facturas.isEmpty()) {
+            facturas.forEach(factura -> {
+                valoresFacturas.add(factura.getTotal());
+            });
+            BigDecimal totalXRegistro = registro.calcularValorTotal(valoresFacturas);
+            registro.setFacturas(facturas);
+            registro.setValorTotal(totalXRegistro);
+            return ResponseEntity.status(HttpStatus.ACCEPTED).body(service.insert(registro));
+        } else {
+            throw new RuntimeException("No existen facturas pagas para el dia de hoy");
+        }
     }
 
     @DeleteMapping("/{id}")
